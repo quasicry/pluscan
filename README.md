@@ -2,7 +2,7 @@
 
 𑖂
 
-Install Obsidian plugins from **inside your vault** 
+Install Obsidian plugins from **local folders or zip files inside your vault** 
 
 Place a plugin folder (containing `manifest.json` and `main.js`) into `_plugins/`
 (or any folder you configure), then run **Pluscan: Scan now** or tap the ribbon
