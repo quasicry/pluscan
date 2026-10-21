@@ -1,0 +1,11 @@
+#!/bin/sh
+# 提交信息格式：<type>: <subject>
+# type ∈ feat|fix|docs|refactor|test|chore|gate
+
+msg=$(cat "$1" | head -1)
+echo "$msg" | grep -qE '^(feat|fix|docs|refactor|test|chore|gate): .+' || {
+  echo "提交信息不符規範：須為 '<type>: <subject>'，type ∈ feat|fix|docs|refactor|test|chore|gate"
+  echo "實際：$msg"
+  exit 1
+}
+exit 0

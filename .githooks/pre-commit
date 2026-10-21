@@ -1,0 +1,18 @@
+#!/bin/sh
+# obplu 提交前門禁：staged 檔案過 8 類規則檢查。
+# 安裝：git config core.hooksPath .githooks
+# 繞過（緊急，須在提交信息註明理由）：git commit --no-verify
+
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+[ -z "$staged" ] && exit 0
+
+if echo "$staged" | grep -qE '\.(ts|tsx|mjs)$|manifest\.json|versions\.json'; then
+  node scripts/gate.mjs --staged || {
+    echo ""
+    echo "門禁未過。修復上列違規，或確認屬誤報後調整 scripts/gate.mjs 的規則（不要 --no-verify 繞過）。"
+    exit 1
+  }
+fi
+
+# 提交信息規範提示（<type>: <subject>）由 commit-msg hook 檢查
+exit 0

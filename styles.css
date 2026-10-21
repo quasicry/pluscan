@@ -1,0 +1,149 @@
+/* pluscan styles —— 全走官方 CSS 變量，禁硬編碼顏色。 */
+
+.pluscan-confirm-card .pluscan-confirm-row {
+	display: flex;
+	gap: var(--size-4-2);
+	padding: var(--size-2-1) 0;
+}
+
+.pluscan-confirm-label {
+	color: var(--text-muted);
+	min-width: 10em;
+}
+
+.pluscan-confirm-value {
+	color: var(--text-normal);
+	font-family: var(--font-monospace);
+}
+
+.pluscan-confirm-compat,
+.pluscan-confirm-overwrite {
+	margin-top: var(--size-4-2);
+	padding: var(--size-2-2) var(--size-2-3);
+	border-radius: var(--radius-s);
+	background-color: var(--background-secondary);
+}
+
+.pluscan-compat-ok {
+	color: var(--text-success, var(--text-normal));
+}
+
+.pluscan-compat-warn {
+	color: var(--text-warning, var(--text-muted));
+}
+
+.pluscan-confirm-actions {
+	display: flex;
+	gap: var(--size-4-2);
+	margin-top: var(--size-4-3);
+}
+
+.pluscan-scanner-status {
+	color: var(--text-muted);
+	margin: var(--size-2-2) 0;
+}
+
+.pluscan-candidate {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--size-4-2);
+	padding: var(--size-2-1) 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.pluscan-candidate-meta {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-2-1);
+}
+
+.pluscan-candidate-title {
+	color: var(--text-normal);
+}
+
+.pluscan-candidate-sub {
+	color: var(--text-muted);
+	font-size: var(--font-ui-smaller);
+}
+
+/* 設置頁：URL 輸入在窄屏收縮到可用寬度（官方控制項容器已響應式，這裡只防長 URL 撑破） */
+/* URL / GitHub Releases 輸入框：設置項控制區默認太窄（~120px），用 min-width 撐出可用輸入空間（info 區自動讓位收縮） */
+/* info 區保留可讀寬度（長語言名稱/描述不被擠扁），控制區吃其餘寬度 */
+/* info 與輸入框共享行寬：info 保證長語言名稱不折行，輸入框佔過半；
+   兩側 min-width 取低值，窄窗口由 media query 進一步放寬限制，避免連同按鈕溢出 */
+.setting-item.pluscan-url-setting > .setting-item-info {
+	flex: 1 1 45%;
+	min-width: 12em;
+}
+
+.setting-item.pluscan-url-setting > .setting-item-control {
+	flex: 1 1 55%;
+	justify-content: flex-end;
+	gap: var(--size-2-3);
+	min-width: 0;
+	max-width: 100%;
+}
+
+.pluscan-url-input {
+	width: 100%;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.pluscan-url-setting .pluscan-url-input {
+	min-width: 16em;
+}
+
+@media (max-width: 900px) {
+	.pluscan-url-setting .pluscan-url-input {
+		min-width: 10em;
+	}
+
+	.setting-item.pluscan-url-setting > .setting-item-info {
+		min-width: 10em;
+	}
+}
+
+@media (max-width: 700px) {
+	.pluscan-url-setting .pluscan-url-input {
+		min-width: 8em;
+	}
+}
+
+@media (max-width: 500px) {
+	.pluscan-confirm-label {
+		min-width: 7em;
+	}
+}
+
+/* Changelog review card (before/after modes) */
+.pluscan-confirm-changelog-head {
+	border-top: 1px solid var(--background-modifier-border);
+	margin-top: 0.75em;
+	padding-top: 0.5em;
+	font-weight: var(--font-semibold);
+}
+.pluscan-confirm-changelog-body {
+	max-height: 300px;
+	overflow-y: auto;
+	font-size: var(--font-ui-smaller);
+	color: var(--text-muted);
+}
+.pluscan-confirm-changelog-empty {
+	color: var(--text-faint);
+	font-style: italic;
+}
+
+/* 候選列表 Modal */
+.pluscan-candidate-list {
+	margin-top: var(--size-2-2);
+}
+
+.pluscan-candidate-disabled {
+	opacity: var(--icon-opacity, 0.6);
+}
+
+.pluscan-candidate input[type="checkbox"] {
+	flex-shrink: 0;
+}

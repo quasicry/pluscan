@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # 繞過 npm 10.9.x runner bug（Exit handler never called）
+      - name: Pin npm
+        run: npm install -g npm@10.8.2
+      # 等價於 obsidian-workflows mode: release（其內部 npm install 在 runner 上間歇失敗）：
+      # 安裝依賴 → 構建 → 打包 zip → 建立 draft release 並上傳資產
+      - name: Install dependencies
+        run: yarn install --no-lockfile --ignore-engines
+      - name: Typecheck
+        run: node node_modules/typescript/bin/tsc --noEmit --skipLibCheck
+      - name: Build
+        run: node esbuild.config.mjs production
+      # Obsidian 只下載三件套；attestations 提供 build provenance
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" --draft --title "Pluscan $GITHUB_REF_NAME" --generate-notes \
+            main.js manifest.json styles.css

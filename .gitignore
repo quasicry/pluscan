@@ -1,0 +1,19 @@
+# Node / esbuild 產物
+node_modules/
+main.js
+*.map
+
+# npm
+npm-debug.log*
+
+# 環境
+.DS_Store
+Thumbs.db
+
+# 編輯器
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Obsidian 開發 vault 產物（本倉庫若被直接放進 .obsidian/plugins/obplu/，這些屬 vault 而非插件）
+data.json

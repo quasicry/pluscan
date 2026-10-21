@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # 繞過 npm 10.9.x runner bug（Exit handler never called, npm/cli#8099 系）
+      - name: Pin npm
+        run: npm install -g npm@10.8.2
+      - name: Install dependencies
+        run: yarn install --no-lockfile --ignore-engines
+      - name: Typecheck
+        run: node node_modules/typescript/bin/tsc --noEmit --skipLibCheck
+      - name: Gate checks（8 類規則）
+        run: node scripts/gate.mjs
+      - name: Build
+        run: node esbuild.config.mjs production
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # 繞過 npm 10.9.x runner bug
+      - name: Pin npm
+        run: npm install -g npm@10.8.2
+      # 官方目錄同套校驗的等價實現（obsidian-workflows 內部 npm install 在 runner 上間歇失敗）：
+      # manifest 校驗 + versions.json 一致 + 構建 + 官方 scanner lint
+      - name: Install dependencies
+        run: yarn install --no-lockfile --ignore-engines
+      - name: Manifest & versions validation
+        run: |
+          node -e "const m=require('./manifest.json'); if(!m.id||!m.version||!m.minAppVersion||!m.author) process.exit(1); console.log('manifest ok', m.id, m.version)"
+          node -e "const v=require('./versions.json'); const m=require('./manifest.json'); if(v[m.version]!==m.minAppVersion) process.exit(1); console.log('versions ok')"
+      - name: Typecheck
+        run: node node_modules/typescript/bin/tsc --noEmit --skipLibCheck
+      - name: Build
+        run: node esbuild.config.mjs production
