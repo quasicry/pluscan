@@ -5,9 +5,7 @@
 
 ## 0.2.1
 _2026-10-22_
-
-### Added
-- **捐贈入口**：設置頁新增捐贈按鈕（Buy Me a Coffee）；manifest 加 `fundingUrl`。
+喝了幾杯咖啡。
 
 ## 0.2.0
 
