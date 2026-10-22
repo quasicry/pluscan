@@ -192,3 +192,10 @@
 2. 移除 builtin-modules 依賴——esbuild.config.mjs 改手寫 Node 內建模塊靜態清單（42 項）；構建產物 md5 與改前完全一致（零差異鐵證）。
 3. release.yml 只上傳三件套（main.js/manifest.json/styles.css）——icon.svg 與 zip 從 Release 移除（Obsidian 不下載額外檔案）。
 4. release.yml 加 actions/attest-build-provenance@v2（id-token/attestations 權限）——修「Missing GitHub artifact attestations」。
+
+
+## 2026-10-22 推送捐贈入口（API 路線）
+
+**用戶令**：用舊 fine-grained PAT 推送，按本地編輯的 LOG 為準。
+**過程**：git push 兩次被遠端斷（fetch 通/push 斷，中間層）→ 改 API 路線：基於遠端 main 5a3e1bc（用戶網頁 README/LOG 編輯）建樹（9 檔差異 blob）→ commit 0600523「feat: add donation entry…」→ force main。
+**驗證**：遠端 manifest/LOG/SettingTab/zh-tw 與本地逐字節一致 ✅。
