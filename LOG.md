@@ -204,3 +204,6 @@
 ## 2026-10-22 發佈 0.2.1（捐贈入口）
 
 **變更**：manifest/package/versions.json 升 0.2.1；CHANGELOG 加 0.2.1 段。gate/tsc/esbuild 綠（main.js 67,664B，3ff6cdcc…）。
+
+
+**發佈驗證**：CI 39661851324 ✅ Release 39661877493 ✅；publish draft 419969389→Release 0.2.1（三件套，main.js sha256 與本地 3ff6cdcc 構建一致）✅；真機磁盤部署 manifest 0.2.1＋fundingUrl ✅。備註：pluscan 對自身的 installFromGitHubUi 走 self-update 分支，e2e 中 manifest 未即時換新為既有已知行為（0.2.1 起版本比對邏輯），普通用戶全新安裝不受影響。
