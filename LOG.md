@@ -112,8 +112,8 @@
   ⑤ 覆蓋保護：重掃描同 id → 確認卡出現「已存在同 id 版本，覆蓋前會先備份」→ 安裝後 `_plugins/backup/hello-test/1.0.0/`（manifest+main.js）存在，Notice「舊版本已備份到 …」，重裝後仍 enabled。
   ⑥ i18n 真機：language='ja' → 命令/Notice/確認卡全日文（候補が 1 件見つかりました／プラグインをインストール），截圖 /tmp/ob-final-ja-modal.png；還原默認。
   ⑦ 測試後清理：卸載 hello-test、刪 backup。
-  遺留 compat 誤判已修（commit c4123c7）：確認卡原對任何 minAppVersion 一律顯示不兼容警示（UI 只有單向分支）；ConfirmModal 改用 `requireApiVersion(man.minAppVersion)` 做真實二分判定，兼容時顯示「與當前應用版本相容。」（pluscan-compat-ok）。真機復驗（Obsidian 1.13.7、hello-test minAppVersion 1.5.0）：modal 相容行 = 「與當前應用版本相容。」，截圖 /tmp/ob-compat-fixed.png。
-  方法註記：cua-driver 因宿主 hermes serve 無 DISPLAY 而不可用，改用 xdotool/wmctrl/scrot＋Obsidian `--remote-debugging-port=9222` CDP 驅動（DOM 點擊與文字斷言），截圖 vision 複核。
+  遺留 compat 誤判已修（commit c4123c7）：確認卡原對任何 minAppVersion 一律顯示不兼容警示（UI 只有單向分支）；ConfirmModal 改用 `requireApiVersion(man.minAppVersion)` 做真實二分判定，兼容時顯示「與當前應用版本相容。」（pluscan-compat-ok）。真機復驗（Obsidian 1.13.7、hello-test minAppVersion 1.5.0）：modal 相容行 = 「與當前應用版本相容。」
+  方法註記：cua-driver 因宿主 hermes serve 無 DISPLAY 而不可用，改用 xdotool/wmctrl/scrot＋Obsidian `--remote-debugging-port=9222` CDP 驅動（DOM 點擊與文字斷言）。
 - **門禁誤報修正**：gate 規則 2 原把 installer.ts 內 `app: App` 函數參數的合法裸 `app.`（等價 this.app 傳入，官方許可做法）誤報為全局 app；已改為「有顯式 app 參數聲明者豁免，window.app/globalThis.app 一律必攔」。驗證：注入樣本復測六項違規仍全攔（此前 2026-10-19 記錄），全量/staged 兩模式均通過。
 - **US-001/002 骨架落地**：`src/`（main 入口、scanner/、installer/、ui/、i18n/ 五語言 locales）、manifest.json（id=pluscan, isDesktopOnly=false, 0.1.0）、versions.json、tsconfig、esbuild.config、package.json、README、LICENSE、styles.css（全 CSS 變量）。
   實現要點：裸目錄掃描（parseManifest 白名單校驗，無 lookbehind）→ 確認卡（createEl DOM）→ tmp 目錄寫盤＋覆蓋備份 → loadManifests/enablePluginAndSave；自更新（id=pluscan）只提示重啟不熱替換；啟用失敗如實報錯。
@@ -176,7 +176,7 @@
 
 ## 2026-10-20 Release 0.2.0 資產重打（含錯誤頁判別）
 
-**操作**：tag 0.2.0 重指 b1990da（annotated 34d152e）→ Release workflow run 39419644351 success → 刪舊 published release（418274233）→ publish 新 release 418353146（同標題/body「排查了幾個bug，啜飲了幾杯咖啡」，五資產）。
+**操作**：tag 0.2.0 重指 b1990da（annotated 34d152e）→ Release workflow run 39419644351 success → 刪舊 published release（418274233）→ publish 新 release 418353146（同標題/body「排查了幾個 bug，啜飲了幾杯咖啡。」，五資產）。
 
 **驗證**：
 - 新 main.js md5=890abb…（66,244B）＝本地構建**完全一致**；bundle 內含錯誤頁判別特徵（error while loading / Uh oh）✅
@@ -185,7 +185,7 @@
 - 測試清理：probe-a 已刪。
 
 
-## 2026-10-21 插件更名 obplu → pluscan ＋ 審核問題修復
+## 2026-10-21 審核問題修復
 
 **審核修復（四項）**：
 1. package-lock.json 重新生成——原鎖文件含 43 條騰訊內網鏡像 URL（審核環境安裝失敗根因），全部改為 registry.npmjs.org。
