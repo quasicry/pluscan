@@ -199,3 +199,8 @@
 **用戶令**：用舊 fine-grained PAT 推送，按本地編輯的 LOG 為準。
 **過程**：git push 兩次被遠端斷（fetch 通/push 斷，中間層）→ 改 API 路線：基於遠端 main 5a3e1bc（用戶網頁 README/LOG 編輯）建樹（9 檔差異 blob）→ commit 0600523「feat: add donation entry…」→ force main。
 **驗證**：遠端 manifest/LOG/SettingTab/zh-tw 與本地逐字節一致 ✅。
+
+
+## 2026-10-22 發佈 0.2.1（捐贈入口）
+
+**變更**：manifest/package/versions.json 升 0.2.1；CHANGELOG 加 0.2.1 段。gate/tsc/esbuild 綠（main.js 67,664B，3ff6cdcc…）。

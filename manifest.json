@@ -1,7 +1,7 @@
 {
   "id": "pluscan",
   "name": "Pluscan",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "minAppVersion": "1.13.0",
   "description": "Install plugins from local folders or zip files inside your vault, with a confirm-before-install card.",
   "author": "quasicry",

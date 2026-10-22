@@ -3,6 +3,12 @@
 本文件記錄 pluscan 每次可交付變更。格式遵循 Keep a Changelog；版本遵 SemVer。
 「落地記錄」見 `LOG.md`（含每次變更的驗證證據）。
 
+## 0.2.1
+_2026-10-22_
+
+### Added
+- **捐贈入口**：設置頁新增捐贈按鈕（Buy Me a Coffee）；manifest 加 `fundingUrl`。
+
 ## 0.2.0
 
 _2026-10-20_
