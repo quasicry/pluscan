@@ -103,6 +103,20 @@ export class PluscanSettingTab extends PluginSettingTab {
 			},
 		};
 
+		// 捐贈：外鏈按鈕（render 型，無持久化設置）
+		const donateDef: SettingDefinitionItem = {
+			name: s.settings.donateName,
+			desc: s.settings.donateDesc,
+			render: (setting: Setting): void | (() => void) => {
+				setting.settingEl.addClass("pluscan-donate-setting");
+				setting.addButton((b: ButtonComponent) =>
+					b.setButtonText(s.settings.donateButton).onClick(() => {
+						window.open("https://buymeacoffee.com/quasicry", "_blank");
+					}),
+				);
+			},
+		};
+
 		return [
 			{
 				name: s.settings.scanFolder,
@@ -179,6 +193,7 @@ export class PluscanSettingTab extends PluginSettingTab {
 					})(),
 				},
 			},
+			donateDef,
 		];
 	}
 }
