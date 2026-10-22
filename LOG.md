@@ -193,17 +193,21 @@
 3. release.yml 只上傳三件套（main.js/manifest.json/styles.css）——icon.svg 與 zip 從 Release 移除（Obsidian 不下載額外檔案）。
 4. release.yml 加 actions/attest-build-provenance@v2（id-token/attestations 權限）——修「Missing GitHub artifact attestations」。
 
-
-## 2026-10-22 推送捐贈入口（API 路線）
-
-**用戶令**：用舊 fine-grained PAT 推送，按本地編輯的 LOG 為準。
-**過程**：git push 兩次被遠端斷（fetch 通/push 斷，中間層）→ 改 API 路線：基於遠端 main 5a3e1bc（用戶網頁 README/LOG 編輯）建樹（9 檔差異 blob）→ commit 0600523「feat: add donation entry…」→ force main。
-**驗證**：遠端 manifest/LOG/SettingTab/zh-tw 與本地逐字節一致 ✅。
-
-
-## 2026-10-22 發佈 0.2.1（捐贈入口）
+## 2026-10-22 發佈 0.2.1
 
 **變更**：manifest/package/versions.json 升 0.2.1；CHANGELOG 加 0.2.1 段。gate/tsc/esbuild 綠（main.js 67,664B，3ff6cdcc…）。
 
 
 **發佈驗證**：CI 39661851324 ✅ Release 39661877493 ✅；publish draft 419969389→Release 0.2.1（三件套，main.js sha256 與本地 3ff6cdcc 構建一致）✅；真機磁盤部署 manifest 0.2.1＋fundingUrl ✅。備註：pluscan 對自身的 installFromGitHubUi 走 self-update 分支，e2e 中 manifest 未即時換新為既有已知行為（0.2.1 起版本比對邏輯），普通用戶全新安裝不受影響。
+
+
+## 2026-10-22 移動端兼容檢查（isDesktopOnly）
+
+**缺口**：minAppVersion 三層防護已有，但 isDesktopOnly 全無檢查——手機上會照裝桌面專用插件。
+**實現**：①compat.ts 加 `isDesktopCompatible(isDesktopOnly)`（Platform.isMobile && true → false）②installer.ts 兩處預檢（資料夾/zip commit 前，error="mobile-unsupported"）③ConfirmModal 加移動端警告徽章、CandidateListModal compatible 計算加入④main.ts 三處錯誤 Notice 分支⑤i18n 五語言 confirm.mobileUnsupported＋notices.mobileUnsupported。
+**驗證**：gate 22 檔 ✅ tsc ✅ esbuild（main.js 69,759B，5ec4aec3…）✅；邏輯五案例 ALL PASS（mobile+desktopOnly 拒／mobile+normal 允／undefined 允／desktop 回歸全允）；真機桌面端確認卡回歸 0 誤報徽章 ✅。移動端真機行為待 US-006 iPhone 一併驗。
+
+
+## 2026-10-22 發佈 0.2.2（移動端兼容檢查）
+
+**變更**：manifest/package/versions.json 升 0.2.2；CHANGELOG 加 0.2.2 段。

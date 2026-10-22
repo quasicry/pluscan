@@ -17,6 +17,7 @@
 
 // 安裝前確認卡（Modal）。規範：DOM 全走 createEl、Sentence case、無硬編碼樣式。
 import { App, MarkdownRenderer, Modal, requireApiVersion, type Component } from "obsidian";
+import { isDesktopCompatible } from "../installer/compat";
 import type { Candidate } from "../scanner/scanner";
 import type { EnStrings } from "../i18n";
 
@@ -54,14 +55,21 @@ export class ConfirmModal extends Modal {
 		}
 
 		const compat = card.createDiv({ cls: "pluscan-confirm-compat" });
+		let compatOk = true;
 		if (man?.minAppVersion) {
-			const ok = requireApiVersion(man.minAppVersion);
+			compatOk = requireApiVersion(man.minAppVersion);
 			compat.createSpan({
-				cls: ok ? "pluscan-compat-ok" : "pluscan-compat-warn",
-				text: ok ? s.confirm.compatible : s.confirm.incompatible,
+				cls: compatOk ? "pluscan-compat-ok" : "pluscan-compat-warn",
+				text: compatOk ? s.confirm.compatible : s.confirm.incompatible,
 			});
 		} else {
 			compat.createSpan({ cls: "pluscan-compat-ok", text: s.confirm.compatible });
+		}
+		if (man?.isDesktopOnly && !isDesktopCompatible(man.isDesktopOnly)) {
+			compat.createSpan({
+				cls: "pluscan-compat-warn",
+				text: s.confirm.mobileUnsupported,
+			});
 		}
 		if (this.overwrite) {
 			card.createDiv({ cls: "pluscan-confirm-overwrite" }).createSpan({

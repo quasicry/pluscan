@@ -16,7 +16,7 @@
 // along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 // 兼容性判定：包一層 requireApiVersion，使其在測試環境可注入。
-import { requireApiVersion } from "obsidian";
+import { requireApiVersion, Platform } from "obsidian";
 
 export function requireApiVersionSafe(minAppVersion: string): boolean {
 	try {
@@ -24,4 +24,9 @@ export function requireApiVersionSafe(minAppVersion: string): boolean {
 	} catch {
 		return false;
 	}
+}
+
+/** 移動端兼容判定：isDesktopOnly 插件在手機/平板上不可用。 */
+export function isDesktopCompatible(isDesktopOnly?: boolean): boolean {
+	return !(Platform.isMobile && isDesktopOnly === true);
 }

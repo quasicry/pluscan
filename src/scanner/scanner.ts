@@ -32,6 +32,7 @@ export interface Manifest {
 	version: string;
 	minAppVersion?: string;
 	description?: string;
+	isDesktopOnly?: boolean;
 }
 
 /**

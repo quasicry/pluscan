@@ -18,6 +18,7 @@
 // 候選列表 Modal：掃描出的多個候選（裸目錄＋壓縮包）一次列出、勾選批量安裝。
 // 規範：DOM 全走 createEl、Sentence case、無硬編碼樣式（官方 CSS 變量）。
 import { App, Modal, Notice, requireApiVersion } from "obsidian";
+import { isDesktopCompatible } from "../installer/compat";
 import type { Candidate } from "../scanner/scanner";
 import type { ZipCandidate } from "../installer/zip";
 import type { EnStrings } from "../i18n";
@@ -152,7 +153,7 @@ export function buildListEntries(candidates: Candidate[], zips: ZipCandidate[], 
 			name: man?.name ?? man?.id ?? c.folderPath.split("/").pop() ?? c.folderPath,
 			id: man?.id ?? "—",
 			version: man?.version ?? "—",
-			compatible: man?.minAppVersion ? requireApiVersion(man.minAppVersion) : true,
+			compatible: (man?.minAppVersion ? requireApiVersion(man.minAppVersion) : true) && isDesktopCompatible(man?.isDesktopOnly),
 			overwrite: man ? installedIds.has(man.id) : false,
 			broken: man ? null : `${c.folderPath}: ${strings.notices.invalidManifest}`,
 		});
@@ -166,7 +167,7 @@ export function buildListEntries(candidates: Candidate[], zips: ZipCandidate[], 
 			name: man?.name ?? man?.id ?? z.zipPath.split("/").pop() ?? z.zipPath,
 			id: man?.id ?? "—",
 			version: man?.version ?? "—",
-			compatible: man?.minAppVersion ? requireApiVersion(man.minAppVersion) : true,
+			compatible: (man?.minAppVersion ? requireApiVersion(man.minAppVersion) : true) && isDesktopCompatible(man?.isDesktopOnly),
 			overwrite: man ? installedIds.has(man.id) : false,
 			broken: man ? null : `${z.zipPath}: ${strings.notices.invalidManifest}`,
 		});

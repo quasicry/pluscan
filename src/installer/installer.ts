@@ -20,7 +20,7 @@
 import { App, normalizePath } from "obsidian";
 import type { Candidate, Manifest } from "../scanner/scanner";
 import { parseManifest } from "../scanner/scanner";
-import { requireApiVersionSafe } from "./compat";
+import { requireApiVersionSafe, isDesktopCompatible } from "./compat";
 import type { ZipCandidate } from "./zip";
 
 /** 把 zip 解出的檔案映射寫入目標目錄（已被 zip.ts 安全路徑過濾）。 */
@@ -46,6 +46,9 @@ export async function installFromZip(app: App, candidate: ZipCandidate, zipFiles
 
 	if (man.minAppVersion && !requireApiVersionSafe(man.minAppVersion)) {
 		return { ok: false, error: "minapp:" + man.minAppVersion, manifest: man };
+	}
+	if (!isDesktopCompatible(man.isDesktopOnly)) {
+		return { ok: false, error: "mobile-unsupported", manifest: man };
 	}
 
 	const adapter = app.vault.adapter;
@@ -181,6 +184,10 @@ export async function installFromFolder(app: App, candidate: Candidate, opts: In
 	// minAppVersion 預檢：寫盤不可逆，先確認這版跑得起
 	if (man.minAppVersion && !requireApiVersionSafe(man.minAppVersion)) {
 		return { ok: false, error: "minapp:" + man.minAppVersion, manifest: man };
+	}
+	// 移動端預檢：isDesktopOnly 插件在手機/平板拒裝
+	if (!isDesktopCompatible(man.isDesktopOnly)) {
+		return { ok: false, error: "mobile-unsupported", manifest: man };
 	}
 
 	const adapter = app.vault.adapter;

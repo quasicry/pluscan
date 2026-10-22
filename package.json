@@ -1,6 +1,6 @@
 {
   "name": "pluscan",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Install plugins from local folders or zip files inside your vault.",
   "main": "main.js",
   "scripts": {

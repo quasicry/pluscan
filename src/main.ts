@@ -273,6 +273,7 @@ export default class PluscanPlugin extends Plugin {
 		if (!result.ok) {
 			const err = result.error ?? "";
 			if (err.startsWith("minapp:")) new Notice(s.notices.appVersion(err.slice(7)));
+			else if (err === "mobile-unsupported") new Notice(s.notices.mobileUnsupported);
 			else if (err === "enable-failed") new Notice(s.notices.enabledFailed);
 			else if (err === "empty-main") new Notice(s.notices.missingEntry);
 			else new Notice(s.notices.installFailed(`${entry.name}: ${err}`), 8000);
@@ -315,7 +316,8 @@ export default class PluscanPlugin extends Plugin {
 				if (!result.ok) {
 					if (result.error.startsWith("minapp:")) {
 						new Notice(s.notices.appVersion(result.error.slice(7)));
-					} else if (result.error === "enable-failed") {
+					} else if (result.error === "mobile-unsupported") {
+					new Notice(s.notices.mobileUnsupported);} else if (result.error === "enable-failed") {
 						new Notice(s.notices.enabledFailed);
 					} else if (result.error === "empty-main") {
 						new Notice(s.notices.missingEntry);
@@ -366,7 +368,8 @@ export default class PluscanPlugin extends Plugin {
 				if (!result.ok) {
 					if (result.error.startsWith("minapp:")) {
 						new Notice(s.notices.appVersion(result.error.slice(7)));
-					} else if (result.error === "enable-failed") {
+					} else if (result.error === "mobile-unsupported") {
+					new Notice(s.notices.mobileUnsupported);} else if (result.error === "enable-failed") {
 						new Notice(s.notices.enabledFailed);
 					} else if (result.error === "empty-main") {
 						new Notice(s.notices.missingEntry);
